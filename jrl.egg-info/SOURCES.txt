@@ -1,4 +1,14 @@
 setup.py
+jrl/__init__.py
+jrl/config.py
+jrl/deprecated.py
+jrl/geometry.py
+jrl/math_utils.py
+jrl/robot.py
+jrl/robots.py
+jrl/urdf_utils.py
+jrl/utils.py
+jrl/visualize.py
 jrl.egg-info/PKG-INFO
 jrl.egg-info/SOURCES.txt
 jrl.egg-info/dependency_links.txt
