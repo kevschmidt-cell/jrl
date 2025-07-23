@@ -551,31 +551,20 @@ class Iiwa7_L(Robot):
 
     def __init__(self, verbose: bool = False):
         active_joints = [
-            "iiwa_joint_1",
-            "iiwa_joint_2",
-            "iiwa_joint_3",
-            "iiwa_joint_4",
-            "iiwa_joint_5",
-            "iiwa_joint_6",
-            "iiwa_joint_7",
+            "lbr1_A1",
+            "lbr1_A2",
+            "lbr1_A3",
+            "lbr1_A4",
+            "lbr1_A5",
+            "lbr1_A6",
+            "lbr1_A7",
         ]
-        urdf_filepath = get_filepath("urdfs/iiwa7_L/iiwa7_L.urdf")
+        urdf_filepath = get_filepath("urdfs/iiwa7_L/iiwa7_L_updated.urdf")
         base_link = "world"
-        end_effector_link_name = "iiwa_link_ee"
-        collision_capsules_by_link = {
-            "world": None,
-            "iiwa_link_0": _load_capsule("urdfs/iiwa7_L/capsules/link_0.txt"),
-            "iiwa_link_1": _load_capsule("urdfs/iiwa7_L/capsules/link_1.txt"),
-            "iiwa_link_2": _load_capsule("urdfs/iiwa7_L/capsules/link_2.txt"),
-            "iiwa_link_3": _load_capsule("urdfs/iiwa7_L/capsules/link_3.txt"),
-            "iiwa_link_4": _load_capsule("urdfs/iiwa7_L/capsules/link_4.txt"),
-            "iiwa_link_5": _load_capsule("urdfs/iiwa7_L/capsules/link_5.txt"),
-            "iiwa_link_6": _load_capsule("urdfs/iiwa7_L/capsules/link_6.txt"),
-            "iiwa_link_7": _load_capsule("urdfs/iiwa7_L/capsules/link_7.txt"),
-            "iiwa_link_ee": None,
-        }
+        end_effector_link_name = "lbr1_link_ee"
+        collision_capsules_by_link = []
 
-        ignored_collision_pairs = (IIWA7_ALWAYS_COLLIDING_LINKS + IIWA7_NEVER_COLLIDING_LINKS)
+        ignored_collision_pairs = []
         Robot.__init__(
             self,
             Iiwa7_L.name,
