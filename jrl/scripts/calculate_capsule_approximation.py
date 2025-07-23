@@ -73,7 +73,7 @@ def random_choice_optimal_capsule(vertices: torch.Tensor):
     # Beispiel: Skaliert basierend auf Bounding Box des STL
     p1s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
     p2s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
-    rs = bbox_diag * 0.2 * torch.rand(nsamples, device=device) + bbox_diag * 0.05
+    rs = bbox_diag * 0.37 * torch.rand(nsamples, device=device) + bbox_diag * 0.05
 
     print(f"random_choice_optimal_capsule() | Sampled {nsamples} capsules")
     print("Shape for distance computation:", nsamples * vertices.shape[0])
@@ -94,10 +94,12 @@ def random_choice_optimal_capsule(vertices: torch.Tensor):
         p1, p2, r = p1s[mask][i], p2s[mask][i], rs[mask][i]
     else:
         # Fallback: besten Kandidaten mit minimalem Überschuss nehmen
-        min_dist, i = torch.min(maxdists, dim=0)
-        print("No valid capsule found within margin.")
-        print(f"Using approximate best with maxdist={min_dist.item():.5f}")
+        volume = capsule_volume_batch(p1s, p2s, rs)  # (nsamples,)
+        target_margin = 0.02 * scale  # oder z. B. 0.03 * scale
+        score = (maxdists - target_margin) ** 2 + 0.5 * volume  # Gewichtung anpassbar
+        _, i = torch.min(score, dim=0)
         p1, p2, r = p1s[i], p2s[i], rs[i]
+
 
     return p1, p2, r
 
