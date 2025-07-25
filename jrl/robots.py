@@ -124,9 +124,97 @@ IIWA7_NEVER_COLLIDING_LINKS= [
   ("iiwa_link_4", "iiwa_link_7"),
 ]
 IIWA7_ALWAYS_COLLIDING_LINKS = [("iiwa_link_5", "iiwa_link_7"),]
-IIWA7_SOMETIMES_COLLIDING_LINKS = [("iiwa_link_0", "iiwa_link_5"),
-  ("iiwa_link_0", "iiwa_link_6")]
+IIWA7_L_NEVER_COLLIDING_LINKS= [
+    ("lbr1_link_0", "lbr1_link_2"),
+  ("lbr1_link_0", "lbr1_link_3"),
+  ("lbr1_link_0", "lbr1_link_4"),
+  ("lbr1_link_0", "lbr1_link_7"),
+  ("lbr1_link_0", "lbr1_left_finger_link"),
+  ("lbr1_link_0", "lbr1_right_finger_link"),
+  ("lbr1_link_1", "lbr1_link_3"),
+  ("lbr1_link_1", "lbr1_link_4"),
+  ("lbr1_link_1", "lbr1_link_5"),
+  ("lbr1_link_1", "lbr1_link_6"),
+  ("lbr1_link_1", "lbr1_link_7"),
+  ("lbr1_link_1", "lbr1_link_gripper"),
+  ("lbr1_link_1", "lbr1_left_finger_link"),
+  ("lbr1_link_1", "lbr1_right_finger_link"),
+  ("lbr1_link_2", "lbr1_link_4"),
+  ("lbr1_link_2", "lbr1_link_5"),
+  ("lbr1_link_2", "lbr1_link_6"),
+  ("lbr1_link_2", "lbr1_link_7"),
+  ("lbr1_link_2", "lbr1_link_gripper"),
+  ("lbr1_link_2", "lbr1_left_finger_link"),
+  ("lbr1_link_2", "lbr1_right_finger_link"),
+  ("lbr1_link_3", "lbr1_link_5"),
+  ("lbr1_link_3", "lbr1_link_6"),
+  ("lbr1_link_3", "lbr1_link_7"),
+  ("lbr1_link_3", "lbr1_link_gripper"),
+  ("lbr1_link_3", "lbr1_left_finger_link"),
+  ("lbr1_link_3", "lbr1_right_finger_link"),
+  ("lbr1_link_4", "lbr1_link_6"),
+  ("lbr1_link_4", "lbr1_link_7"),
+  ("lbr1_link_4", "lbr1_link_gripper"),
+  ("lbr1_link_4", "lbr1_right_finger_link"),
+  ("lbr1_link_5", "lbr1_right_finger_link"),
+  ("lbr1_link_6", "lbr1_left_finger_link"),
+  ("lbr1_link_6", "lbr1_right_finger_link"),
+  ("lbr1_link_7", "lbr1_left_finger_link"),
+  ("lbr1_link_7", "lbr1_right_finger_link"),
+  ("lbr1_left_finger_link", "lbr1_right_finger_link"),
+]
 
+IIWA7_L_ALWAYS_COLLIDING_LINKS = [
+    ("lbr1_link_5", "lbr1_link_7"),
+    ("lbr1_link_6", "lbr1_link_gripper"),
+    ("lbr1_link_7", "lbr1_link_gripper"),
+    ]
+
+IIWA7_R_NEVER_COLLIDING_LINKS= [
+    ("lbr2_link_0", "lbr2_link_2"),
+  ("lbr2_link_0", "lbr2_link_3"),
+  ("lbr2_link_0", "lbr2_link_4"),
+  ("lbr2_link_0", "lbr2_link_7"),
+  ("lbr2_link_0", "lbr2_left_finger_link"),
+  ("lbr2_link_0", "lbr2_right_finger_link"),
+  ("lbr2_link_1", "lbr2_link_3"),
+  ("lbr2_link_1", "lbr2_link_4"),
+  ("lbr2_link_1", "lbr2_link_5"),
+  ("lbr2_link_1", "lbr2_link_6"),
+  ("lbr2_link_1", "lbr2_link_7"),
+  ("lbr2_link_1", "lbr2_link_gripper"),
+  ("lbr2_link_1", "lbr2_left_finger_link"),
+  ("lbr2_link_1", "lbr2_right_finger_link"),
+  ("lbr2_link_2", "lbr2_link_4"),
+  ("lbr2_link_2", "lbr2_link_5"),
+  ("lbr2_link_2", "lbr2_link_6"),
+  ("lbr2_link_2", "lbr2_link_7"),
+  ("lbr2_link_2", "lbr2_link_gripper"),
+  ("lbr2_link_2", "lbr2_left_finger_link"),
+  ("lbr2_link_2", "lbr2_right_finger_link"),
+  ("lbr2_link_3", "lbr2_link_5"),
+  ("lbr2_link_3", "lbr2_link_6"),
+  ("lbr2_link_3", "lbr2_link_7"),
+  ("lbr2_link_3", "lbr2_link_gripper"),
+  ("lbr2_link_3", "lbr2_left_finger_link"),
+  ("lbr2_link_3", "lbr2_right_finger_link"),
+  ("lbr2_link_4", "lbr2_link_6"),
+  ("lbr2_link_4", "lbr2_link_7"),
+  ("lbr2_link_4", "lbr2_link_gripper"),
+  ("lbr2_link_4", "lbr2_right_finger_link"),
+  ("lbr2_link_5", "lbr2_right_finger_link"),
+  ("lbr2_link_6", "lbr2_left_finger_link"),
+  ("lbr2_link_6", "lbr2_right_finger_link"),
+  ("lbr2_link_7", "lbr2_left_finger_link"),
+  ("lbr2_link_7", "lbr2_right_finger_link"),
+  ("lbr2_left_finger_link", "lbr2_right_finger_link"),
+]
+
+IIWA7_R_ALWAYS_COLLIDING_LINKS = [
+    ("lbr2_link_5", "lbr2_link_7"),
+    ("lbr2_link_6", "lbr2_link_gripper"),
+    ("lbr2_link_7", "lbr2_link_gripper"),
+    ]
 def _load_capsule(path: str):
     data = np.loadtxt(get_filepath(path), delimiter=",")
     return torch.tensor(data, dtype=DEFAULT_TORCH_DTYPE, device=DEVICE)
@@ -561,10 +649,24 @@ class Iiwa7_L(Robot):
         ]
         urdf_filepath = get_filepath("urdfs/iiwa7_L/iiwa7_L_updated.urdf")
         base_link = "world"
-        end_effector_link_name = "lbr1_link_ee"
-        collision_capsules_by_link = []
-
-        ignored_collision_pairs = []
+        end_effector_link_name = "lbr1_left_finger_link"
+        collision_capsules_by_link = {
+            "world": None,
+            "lbr1_link_0": _load_capsule("urdfs/iiwa7_L/capsules/link_0.txt"),
+            "lbr1_link_1": _load_capsule("urdfs/iiwa7_L/capsules/link_1.txt"),
+            "lbr1_link_2": _load_capsule("urdfs/iiwa7_L/capsules/link_2.txt"),
+            "lbr1_link_3": _load_capsule("urdfs/iiwa7_L/capsules/link_3.txt"),
+            "lbr1_link_4": _load_capsule("urdfs/iiwa7_L/capsules/link_4.txt"),
+            "lbr1_link_5": _load_capsule("urdfs/iiwa7_L/capsules/link_5.txt"),
+            "lbr1_link_6": _load_capsule("urdfs/iiwa7_L/capsules/link_6.txt"),
+            "lbr1_link_7": _load_capsule("urdfs/iiwa7_L/capsules/link_7.txt"),
+            "lbr1_link_ee": None,
+            "lbr1_link_gripper": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_module.txt"),
+            "lbr1_left_finger_link": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_gripper_left.txt"),
+            "lbr1_right_finger_link": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_gripper_right.txt"),
+        }
+        additional_link_name = "lbr1_right_finger_link"
+        ignored_collision_pairs = IIWA7_L_NEVER_COLLIDING_LINKS + IIWA7_L_ALWAYS_COLLIDING_LINKS
         Robot.__init__(
             self,
             Iiwa7_L.name,
@@ -575,7 +677,7 @@ class Iiwa7_L(Robot):
             ignored_collision_pairs,
             collision_capsules_by_link,
             verbose=verbose,
-            additional_link_name=None,
+            additional_link_name=additional_link_name,
         )
 
 class Iiwa7_R(Robot):
@@ -589,31 +691,34 @@ class Iiwa7_R(Robot):
 
     def __init__(self, verbose: bool = False):
         active_joints = [
-            "iiwa_joint_1",
-            "iiwa_joint_2",
-            "iiwa_joint_3",
-            "iiwa_joint_4",
-            "iiwa_joint_5",
-            "iiwa_joint_6",
-            "iiwa_joint_7",
+            "lbr2_A1",
+            "lbr2_A2",
+            "lbr2_A3",
+            "lbr2_A4",
+            "lbr2_A5",
+            "lbr2_A6",
+            "lbr2_A7",
         ]
-        urdf_filepath = get_filepath("urdfs/iiwa7_R/iiwa7_R.urdf")
+        urdf_filepath = get_filepath("urdfs/iiwa7_R/iiwa7_R_updated.urdf")
         base_link = "world"
-        end_effector_link_name = "iiwa_link_ee"
+        end_effector_link_name = "lbr2_left_finger_link"
         collision_capsules_by_link = {
             "world": None,
-            "iiwa_link_0": _load_capsule("urdfs/iiwa7_R/capsules/link_0.txt"),
-            "iiwa_link_1": _load_capsule("urdfs/iiwa7_R/capsules/link_1.txt"),
-            "iiwa_link_2": _load_capsule("urdfs/iiwa7_R/capsules/link_2.txt"),
-            "iiwa_link_3": _load_capsule("urdfs/iiwa7_R/capsules/link_3.txt"),
-            "iiwa_link_4": _load_capsule("urdfs/iiwa7_R/capsules/link_4.txt"),
-            "iiwa_link_5": _load_capsule("urdfs/iiwa7_R/capsules/link_5.txt"),
-            "iiwa_link_6": _load_capsule("urdfs/iiwa7_R/capsules/link_6.txt"),
-            "iiwa_link_7": _load_capsule("urdfs/iiwa7_R/capsules/link_7.txt"),
-            "iiwa_link_ee": None,
+            "lbr2_link_0": _load_capsule("urdfs/iiwa7_R/capsules/link_0.txt"),
+            "lbr2_link_1": _load_capsule("urdfs/iiwa7_R/capsules/link_1.txt"),
+            "lbr2_link_2": _load_capsule("urdfs/iiwa7_R/capsules/link_2.txt"),
+            "lbr2_link_3": _load_capsule("urdfs/iiwa7_R/capsules/link_3.txt"),
+            "lbr2_link_4": _load_capsule("urdfs/iiwa7_R/capsules/link_4.txt"),
+            "lbr2_link_5": _load_capsule("urdfs/iiwa7_R/capsules/link_5.txt"),
+            "lbr2_link_6": _load_capsule("urdfs/iiwa7_R/capsules/link_6.txt"),
+            "lbr2_link_7": _load_capsule("urdfs/iiwa7_R/capsules/link_7.txt"),
+            "lbr2_link_ee": None,
+            "lbr2_link_gripper": _load_capsule("urdfs/iiwa7_R/capsules/2fg7_module.txt"),
+            "lbr2_left_finger_link": _load_capsule("urdfs/iiwa7_R/capsules/2fg7_gripper_left.txt"),
+            "lbr2_right_finger_link": _load_capsule("urdfs/iiwa7_R/capsules/2fg7_gripper_right.txt"),
         }
-
-        ignored_collision_pairs = (IIWA7_ALWAYS_COLLIDING_LINKS + IIWA7_NEVER_COLLIDING_LINKS)
+        additional_link_name = "lbr2_right_finger_link"
+        ignored_collision_pairs = []
         Robot.__init__(
             self,
             Iiwa7_R.name,
@@ -624,7 +729,7 @@ class Iiwa7_R(Robot):
             ignored_collision_pairs,
             collision_capsules_by_link,
             verbose=verbose,
-            additional_link_name=None,
+            additional_link_name=additional_link_name,
         )
 
 

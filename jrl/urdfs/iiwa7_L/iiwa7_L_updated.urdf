@@ -8,7 +8,7 @@
     <link name="world"/>
     <!--joint between {parent} and link_0-->
     <joint name="lbr1_world_iiwa_joint" type="fixed">
-        <origin xyz="0.3682   -0.1842    0.7014" rpy="0.0039    -0.0030   -0.0161"/>
+        <origin xyz="0.3682 -0.1842 0.7014" rpy="0.0039 -0.0030 -0.0161"/>
         <parent link="world"/>
         <child link="lbr1_link_0"/>
     </joint>
