@@ -230,7 +230,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_module.dae"/>
+                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_module.stl"/>
             </geometry>
         </visual>
         <collision>
@@ -261,13 +261,13 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_right.dae"/>
+                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_right.stl"/>
             </geometry>
         </visual>
         <collision name="lbr1_right_finger_collision">
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_right.dae"/>
+                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_right.stl"/>
             </geometry>
         </collision>
     </link>
@@ -275,13 +275,13 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_left.dae"/>
+                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_left.stl"/>
             </geometry>
         </visual>
         <collision name="lbr1_left_finger_collision">
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_left.dae"/>
+                <mesh filename="urdfs/iiwa7_L/meshes/onrobot_2fg7/2fg7_gripper_left.stl"/>
             </geometry>
         </collision>
     </link>
