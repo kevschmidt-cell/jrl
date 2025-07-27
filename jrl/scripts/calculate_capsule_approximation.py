@@ -4,6 +4,7 @@ import stl
 import pathlib
 import meshcat
 import argparse
+from tqdm import tqdm
 
 from mpl_toolkits import mplot3d
 from matplotlib import pyplot as plt
@@ -25,7 +26,6 @@ def capsule_volume_batch(c1: torch.Tensor, c2: torch.Tensor, r: torch.Tensor):
 
     h = torch.norm(c2 - c1, dim=1)
     return np.pi * h * (r**2) + (4 / 3) * np.pi * (r**3)
-
 
 def point_capsule_distance_batch(p: torch.Tensor, c1: torch.Tensor, c2: torch.Tensor, r: torch.Tensor):
     """Compute the distance between a point and a capsule given its end points and radius.

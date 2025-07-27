@@ -214,11 +214,22 @@
         <child link="lbr2_link_ee"/>
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.045"/>
     </joint>
-    <link name="lbr2_link_ee"/>
+    <link name="lbr2_link_ee">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="0.001"/>
+            </geometry>
+            <material name="transparent">
+            <color rgba="1 1 1 0.0"/>
+            </material>
+        </visual>
+    </link>
+
     <joint name="lbr2_joint_gripper" type="fixed">
         <parent link="lbr2_link_ee"/>
         <child link="lbr2_link_gripper"/>
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <origin rpy="1.5708 0 1.5708" xyz="0 0 0"/>
     </joint>
     <!-- weight ,CoG and TCP can be obtained from onrobot web application CoG/TCP -->
     <link name="lbr2_link_gripper">
@@ -234,9 +245,9 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="0 0 0" xyz="0 0 0.06"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <cylinder length="0.12" radius="0.055"/>
+                <mesh filename="urdfs/iiwa7_R/meshes/onrobot_2fg7/2fg7_module.stl"/>
             </geometry>
         </collision>
     </link>
@@ -247,12 +258,12 @@
     </joint>
     <link name="lbr2_gripper_link_ee"/>
     <joint name="lbr2_right_finger_joint" type="fixed">
-        <origin rpy="0 0 0" xyz="0 0.006 0"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
         <parent link="lbr2_link_gripper"/>
         <child link="lbr2_right_finger_link"/>
     </joint>
     <joint name="lbr2_left_finger_joint" type="fixed">
-        <origin rpy="0 0 0" xyz="0 -0.006 0"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
         <parent link="lbr2_link_gripper"/>
         <child link="lbr2_left_finger_link"/>
     </joint>
