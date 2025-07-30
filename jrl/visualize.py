@@ -5,7 +5,7 @@ import os
 os.chdir("/home/kevin/dev/jrl/jrl")  # Damit Meshpfade korrekt aufgelöst werden
 
 world = WorldModel()
-world.readFile("urdfs/iiwa7_R/iiwa7_R_updated.urdf")
+world.readFile("urdfs/iiwa7_L/iiwa7_L_updated.urdf")
 robot = world.robot(0)
 
 print(f"Geladene Links: {robot.numLinks()}")

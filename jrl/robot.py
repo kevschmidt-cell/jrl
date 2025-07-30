@@ -430,7 +430,7 @@ class Robot:
                     if only_non_self_colliding and self.config_self_collides(sample):
                         continue
 
-                    pose = self.forward_kinematics_klampt(sample[None, :])
+                    pose = self.forward_kinematics_klampt(sample[None, :], link_name=self.end_effector_link_name)
                     samples[counter] = sample
                     poses[counter] = pose
                     counter += 1
