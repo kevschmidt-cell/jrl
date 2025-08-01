@@ -668,6 +668,7 @@ class Iiwa7_L(Robot):
             "lbr1_link_gripper": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_module.txt"),
             "lbr1_left_finger_link": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_gripper_left.txt"),
             "lbr1_right_finger_link": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_gripper_right.txt"),
+            "lbr1_true_ee_link": None,  # This is the link that is used for the end effector pose
         }
         additional_link_name = "lbr1_right_finger_link"
         ignored_collision_pairs = IIWA7_L_NEVER_COLLIDING_LINKS + IIWA7_L_ALWAYS_COLLIDING_LINKS
@@ -720,6 +721,7 @@ class Iiwa7_R(Robot):
             "lbr2_link_gripper": _load_capsule("urdfs/iiwa7_R/capsules/2fg7_module.txt"),
             "lbr2_left_finger_link": _load_capsule("urdfs/iiwa7_R/capsules/2fg7_gripper_left.txt"),
             "lbr2_right_finger_link": _load_capsule("urdfs/iiwa7_R/capsules/2fg7_gripper_right.txt"),
+            "lbr2_true_ee_link": None,  # This is the link that is used for the end effector pose
         }
         additional_link_name = "lbr2_right_finger_link"
         ignored_collision_pairs = IIWA7_R_NEVER_COLLIDING_LINKS + IIWA7_R_ALWAYS_COLLIDING_LINKS
