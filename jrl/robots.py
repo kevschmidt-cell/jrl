@@ -129,13 +129,12 @@ IIWA7_L_NEVER_COLLIDING_LINKS= [
   ("lbr1_link_0", "lbr1_link_3"),
   ("lbr1_link_0", "lbr1_link_4"),
   ("lbr1_link_0", "lbr1_link_7"),
-  ("lbr1_link_0", "lbr1_right_finger_link"),
   ("lbr1_link_1", "lbr1_link_3"),
-  ("lbr1_link_2", "lbr1_link_4"),
-  ("lbr1_link_2", "lbr1_link_5"),
-  ("lbr1_link_2", "lbr1_link_6"),
-  ("lbr1_link_2", "lbr1_link_7"),
-  ("lbr1_link_2", "lbr1_link_gripper"),
+  ("lbr1_link_1", "lbr1_link_4"),
+  ("lbr1_link_1", "lbr1_link_5"),
+  ("lbr1_link_1", "lbr1_link_6"),
+  ("lbr1_link_1", "lbr1_link_7"),
+  ("lbr1_link_1", "lbr1_link_gripper"),
   ("lbr1_link_1", "lbr1_left_finger_link"),
   ("lbr1_link_1", "lbr1_right_finger_link"),
   ("lbr1_link_2", "lbr1_link_4"),
@@ -176,7 +175,6 @@ IIWA7_R_NEVER_COLLIDING_LINKS= [
   ("lbr2_link_0", "lbr2_link_3"),
   ("lbr2_link_0", "lbr2_link_4"),
   ("lbr2_link_0", "lbr2_link_7"),
-  ("lbr2_link_0", "lbr2_right_finger_link"),
   ("lbr2_link_1", "lbr2_link_3"),
   ("lbr2_link_1", "lbr2_link_4"),
   ("lbr2_link_1", "lbr2_link_5"),
@@ -216,7 +214,11 @@ IIWA7_R_ALWAYS_COLLIDING_LINKS = [
     ("lbr2_link_5", "lbr2_link_7"),
     ("lbr2_link_6", "lbr2_link_gripper"),
     ("lbr2_link_7", "lbr2_link_gripper"),
-    ]
+]
+
+
+
+
 def _load_capsule(path: str):
     data = np.loadtxt(get_filepath(path), delimiter=",")
     return torch.tensor(data, dtype=DEFAULT_TORCH_DTYPE, device=DEVICE)
@@ -651,7 +653,7 @@ class Iiwa7_L(Robot):
         ]
         urdf_filepath = get_filepath("urdfs/iiwa7_L/iiwa7_L_updated.urdf")
         base_link = "world"
-        end_effector_link_name = "lbr1_left_finger_link"
+        end_effector_link_name = "lbr1_true_ee_link"
         collision_capsules_by_link = {
             "world": None,
             "lbr1_link_0": _load_capsule("urdfs/iiwa7_L/capsules/link_0.txt"),
@@ -703,7 +705,7 @@ class Iiwa7_R(Robot):
         ]
         urdf_filepath = get_filepath("urdfs/iiwa7_R/iiwa7_R_updated.urdf")
         base_link = "world"
-        end_effector_link_name = "lbr2_left_finger_link"
+        end_effector_link_name = "lbr2_true_ee_link"
         collision_capsules_by_link = {
             "world": None,
             "lbr2_link_0": _load_capsule("urdfs/iiwa7_R/capsules/link_0.txt"),

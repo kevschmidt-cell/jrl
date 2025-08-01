@@ -296,4 +296,10 @@
             </geometry>
         </collision>
     </link>
+    <joint name="lbr2_true_ee_joint" type="fixed">
+        <parent link="lbr2_left_finger_link"/>
+        <child link="lbr2_true_ee_link"/>
+        <origin rpy="0 0 0" xyz="0 0.14 0"/>
+    </joint>
+    <link name="lbr2_true_ee_link"/>
 </robot>

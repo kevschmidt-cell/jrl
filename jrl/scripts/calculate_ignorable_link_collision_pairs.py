@@ -17,7 +17,7 @@ if __name__ == "__main__":
     never_colliding_pct = 0.001
 
     # Note: you need to manually comment out the collision pairs in 'ignored_collision_pairs' in __init__()
-    robot = Iiwa7_R()
+    robot = Iiwa7_L()
     # robot = Ur5()
     # robot = Rizon4()
     # robot = Fetch()
