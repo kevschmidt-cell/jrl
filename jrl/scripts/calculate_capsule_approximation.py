@@ -59,24 +59,49 @@ def plot_sphere(ax, center, radius):
 
 
 def random_choice_optimal_capsule(vertices: torch.Tensor):
-    print("Entering random_choice_optimal_capsule()")
+    print("Entering improved random_choice_optimal_capsule()")
     device = vertices.device
     nsamples = 1000
     bbox_min = vertices.min(dim=0).values
     bbox_max = vertices.max(dim=0).values
-    bbox_diag = torch.norm(bbox_max - bbox_min)
+    diag = bbox_max - bbox_min
+    bbox_diag = torch.norm(diag)
     print("BBox min:", bbox_min)
     print("BBox max:", bbox_max)
     print("BBox diag:", bbox_diag)
-    scale = bbox_diag.item()
 
-    # Beispiel: Skaliert basierend auf Bounding Box des STL
-    p1s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
-    p2s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
-    rs = bbox_diag * 0.37 * torch.rand(nsamples, device=device) + bbox_diag * 0.05
+    # === Verbesserte Zylindererkennung (Z-Achse) ===
+    is_z_cylinder = (
+        torch.isclose(diag[0], diag[1], atol=1e-4) and
+        diag[2] > 0.8 * (diag[0] + diag[1]) / 2
+    )
 
-    print(f"random_choice_optimal_capsule() | Sampled {nsamples} capsules")
-    print("Shape for distance computation:", nsamples * vertices.shape[0])
+    if is_z_cylinder:
+        print("Detected Z-aligned cylindrical shape — using axis-aligned capsule sampling.")
+        z0 = bbox_min[2].item()
+        z1 = bbox_max[2].item()
+        height = z1 - z0
+        radius = diag[0] / 2.0
+
+        z_offsets = torch.rand(nsamples, 2, device=device) * height * 0.05
+        z_starts = z0 + z_offsets[:, 0]
+        z_ends = z1 - z_offsets[:, 1]
+
+        p1s = torch.zeros((nsamples, 3), device=device)
+        p2s = torch.zeros((nsamples, 3), device=device)
+        p1s[:, 2] = z_starts
+        p2s[:, 2] = z_ends
+
+        rs = torch.full((nsamples,), radius, device=device)
+        rs += 0.003 * (torch.rand_like(rs) - 0.5)
+
+    else:
+        print("Using generic random capsule sampling.")
+        p1s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
+        p2s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
+        rs = bbox_diag * 0.37 * torch.rand(nsamples, device=device) + bbox_diag * 0.05
+
+    print(f"Sampled {nsamples} capsules")
 
     dists = point_capsule_distance_batch(
         vertices.unsqueeze(0).expand(nsamples, -1, -1).reshape(-1, 3),
@@ -84,24 +109,24 @@ def random_choice_optimal_capsule(vertices: torch.Tensor):
         p2s.unsqueeze(1).expand(-1, vertices.shape[0], -1).reshape(-1, 3),
         rs.unsqueeze(1).expand(-1, vertices.shape[0]).reshape(-1),
     ).reshape(nsamples, vertices.shape[0])
+
     maxdists, _ = torch.max(dists, dim=1)
     margin = 0.02 * bbox_diag
     mask = maxdists < margin
-    print(f"random_choice_optimal_capsule() | Found valid: {mask.sum().item()} of {nsamples}")
+    print(f"Found valid capsules: {mask.sum().item()} / {nsamples}")
 
     if torch.any(mask):
         _, i = torch.min(capsule_volume_batch(p1s[mask], p2s[mask], rs[mask]), dim=0)
         p1, p2, r = p1s[mask][i], p2s[mask][i], rs[mask][i]
     else:
-        # Fallback: besten Kandidaten mit minimalem Überschuss nehmen
-        volume = capsule_volume_batch(p1s, p2s, rs)  # (nsamples,)
-        target_margin = 0.02 * scale  # oder z. B. 0.03 * scale
-        score = (maxdists - target_margin) ** 2 + 0.5 * volume  # Gewichtung anpassbar
+        print("No valid capsules under margin, falling back to best score.")
+        volume = capsule_volume_batch(p1s, p2s, rs)
+        score = (maxdists - margin) ** 2 + 0.5 * volume
         _, i = torch.min(score, dim=0)
         p1, p2, r = p1s[i], p2s[i], rs[i]
 
-
     return p1, p2, r
+
 
 
 def lm_penalty_optimal_capsule(vertices: torch.Tensor, nruns=1, vis=None):

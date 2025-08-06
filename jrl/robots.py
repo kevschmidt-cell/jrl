@@ -129,6 +129,8 @@ IIWA7_L_NEVER_COLLIDING_LINKS= [
   ("lbr1_link_0", "lbr1_link_3"),
   ("lbr1_link_0", "lbr1_link_4"),
   ("lbr1_link_0", "lbr1_link_7"),
+  ("lbr1_link_0", "lbr1_true_ee_link"),
+  ("lbr1_link_0", "lbr1_right_finger_link"),
   ("lbr1_link_1", "lbr1_link_3"),
   ("lbr1_link_1", "lbr1_link_4"),
   ("lbr1_link_1", "lbr1_link_5"),
@@ -136,6 +138,7 @@ IIWA7_L_NEVER_COLLIDING_LINKS= [
   ("lbr1_link_1", "lbr1_link_7"),
   ("lbr1_link_1", "lbr1_link_gripper"),
   ("lbr1_link_1", "lbr1_left_finger_link"),
+  ("lbr1_link_1", "lbr1_true_ee_link"),
   ("lbr1_link_1", "lbr1_right_finger_link"),
   ("lbr1_link_2", "lbr1_link_4"),
   ("lbr1_link_2", "lbr1_link_5"),
@@ -143,31 +146,40 @@ IIWA7_L_NEVER_COLLIDING_LINKS= [
   ("lbr1_link_2", "lbr1_link_7"),
   ("lbr1_link_2", "lbr1_link_gripper"),
   ("lbr1_link_2", "lbr1_left_finger_link"),
+  ("lbr1_link_2", "lbr1_true_ee_link"),
   ("lbr1_link_2", "lbr1_right_finger_link"),
   ("lbr1_link_3", "lbr1_link_5"),
   ("lbr1_link_3", "lbr1_link_6"),
   ("lbr1_link_3", "lbr1_link_7"),
   ("lbr1_link_3", "lbr1_link_gripper"),
   ("lbr1_link_3", "lbr1_left_finger_link"),
+  ("lbr1_link_3", "lbr1_true_ee_link"),
   ("lbr1_link_3", "lbr1_right_finger_link"),
   ("lbr1_link_4", "lbr1_link_6"),
   ("lbr1_link_4", "lbr1_link_7"),
   ("lbr1_link_4", "lbr1_link_gripper"),
   ("lbr1_link_4", "lbr1_left_finger_link"),
+  ("lbr1_link_4", "lbr1_true_ee_link"),
   ("lbr1_link_4", "lbr1_right_finger_link"),
+  ("lbr1_link_5", "lbr1_link_gripper"),
   ("lbr1_link_5", "lbr1_left_finger_link"),
+  ("lbr1_link_5", "lbr1_true_ee_link"),
   ("lbr1_link_5", "lbr1_right_finger_link"),
+  ("lbr1_link_6", "lbr1_link_gripper"),
   ("lbr1_link_6", "lbr1_left_finger_link"),
+  ("lbr1_link_6", "lbr1_true_ee_link"),
   ("lbr1_link_6", "lbr1_right_finger_link"),
   ("lbr1_link_7", "lbr1_left_finger_link"),
   ("lbr1_link_7", "lbr1_right_finger_link"),
-  ("lbr1_left_finger_link", "lbr1_right_finger_link"),
+  ("lbr1_link_gripper", "lbr1_right_finger_link"),
+  ("lbr1_left_finger_link", "lbr1_true_ee_link"),
+  ("lbr1_true_ee_link", "lbr1_right_finger_link"),
 ]
 
 IIWA7_L_ALWAYS_COLLIDING_LINKS = [
     ("lbr1_link_5", "lbr1_link_7"),
-    ("lbr1_link_6", "lbr1_link_gripper"),
-    ("lbr1_link_7", "lbr1_link_gripper"),
+    ("lbr1_link_7", "lbr1_true_ee_link"),
+    ("lbr1_left_finger_link", "lbr1_right_finger_link"),
     ]
 
 IIWA7_R_NEVER_COLLIDING_LINKS= [
@@ -215,9 +227,6 @@ IIWA7_R_ALWAYS_COLLIDING_LINKS = [
     ("lbr2_link_6", "lbr2_link_gripper"),
     ("lbr2_link_7", "lbr2_link_gripper"),
 ]
-
-
-
 
 def _load_capsule(path: str):
     data = np.loadtxt(get_filepath(path), delimiter=",")
@@ -618,7 +627,7 @@ class Iiwa7(Robot):
             "iiwa_link_ee": None,
         }
 
-        ignored_collision_pairs = (IIWA7_ALWAYS_COLLIDING_LINKS + IIWA7_NEVER_COLLIDING_LINKS)
+        ignored_collision_pairs = []
         Robot.__init__(
             self,
             Iiwa7.name,
@@ -654,6 +663,7 @@ class Iiwa7_L(Robot):
         urdf_filepath = get_filepath("urdfs/iiwa7_L/iiwa7_L_updated.urdf")
         base_link = "world"
         end_effector_link_name = "lbr1_true_ee_link"
+        additional_link_name = "lbr1_right_finger_link"
         collision_capsules_by_link = {
             "world": None,
             "lbr1_link_0": _load_capsule("urdfs/iiwa7_L/capsules/link_0.txt"),
@@ -664,14 +674,18 @@ class Iiwa7_L(Robot):
             "lbr1_link_5": _load_capsule("urdfs/iiwa7_L/capsules/link_5.txt"),
             "lbr1_link_6": _load_capsule("urdfs/iiwa7_L/capsules/link_6.txt"),
             "lbr1_link_7": _load_capsule("urdfs/iiwa7_L/capsules/link_7.txt"),
-            "lbr1_link_ee": None,
-            "lbr1_link_gripper": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_module.txt"),
+            "lbr1_link_gripper": _load_capsule("urdfs/iiwa7_L/capsules/lbr1_gripper_blender.txt"),
             "lbr1_left_finger_link": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_gripper_left.txt"),
             "lbr1_right_finger_link": _load_capsule("urdfs/iiwa7_L/capsules/2fg7_gripper_right.txt"),
-            "lbr1_true_ee_link": None,  # This is the link that is used for the end effector pose
+            "lbr1_true_ee_link": _load_capsule("urdfs/iiwa7_L/capsules/small_ball.txt"),  # This is the link that is used for the end effector pose
         }
-        additional_link_name = "lbr1_right_finger_link"
-        ignored_collision_pairs = IIWA7_L_NEVER_COLLIDING_LINKS + IIWA7_L_ALWAYS_COLLIDING_LINKS
+        for link, caps in collision_capsules_by_link.items():
+            if caps is None:
+                print(f"[DEBUG] No capsule for link: {link}")
+            else:
+                print(f"[DEBUG] {link} -> {len(caps)} capsules")
+
+        ignored_collision_pairs = []
         Robot.__init__(
             self,
             Iiwa7_L.name,
