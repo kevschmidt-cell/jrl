@@ -685,7 +685,7 @@ class Iiwa7_L(Robot):
             else:
                 print(f"[DEBUG] {link} -> {len(caps)} capsules")
 
-        ignored_collision_pairs = []
+        ignored_collision_pairs = IIWA7_L_ALWAYS_COLLIDING_LINKS + IIWA7_L_NEVER_COLLIDING_LINKS
         Robot.__init__(
             self,
             Iiwa7_L.name,
