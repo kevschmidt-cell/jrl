@@ -211,59 +211,37 @@
         <!-- end effector without gripper -->
     <joint name="lbr2_joint_ee" type="fixed">
         <parent link="lbr2_link_7"/>
-        <child link="lbr2_link_ee"/>
-        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.045"/>
-    </joint>
-    <link name="lbr2_link_ee">
-        <visual>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-            <geometry>
-                <sphere radius="0.001"/>
-            </geometry>
-            <material name="transparent">
-            <color rgba="1 1 1 0.0"/>
-            </material>
-        </visual>
-    </link>
-
-    <joint name="lbr2_joint_gripper" type="fixed">
-        <parent link="lbr2_link_ee"/>
         <child link="lbr2_link_gripper"/>
-        <origin rpy="1.5708 0 1.5708" xyz="0 0 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.105"/>
     </joint>
+
     <!-- weight ,CoG and TCP can be obtained from onrobot web application CoG/TCP -->
     <link name="lbr2_link_gripper">
         <inertial>
-            <origin rpy="0 0 0" xyz="0 0 0.0625"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
             <mass value="1.2"/>
             <inertia ixx="0.00219" ixy="0" ixz="0" iyy="0.00219" iyz="0" izz="0.0015"/>
         </inertial>
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="urdfs/iiwa7_R/meshes/onrobot_2fg7/2fg7_module.stl"/>
+                <mesh filename="urdfs/iiwa7_R/meshes/collision/lbr2_gripper_blender.stl"/>
             </geometry>
         </visual>
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="urdfs/iiwa7_R/meshes/onrobot_2fg7/2fg7_module.stl"/>
+                <mesh filename="urdfs/iiwa7_R/meshes/collision/lbr2_gripper_blender.stl"/>
             </geometry>
         </collision>
     </link>
-    <joint name="lbr2_gripper_ee" type="fixed">
-        <parent link="lbr2_link_ee"/>
-        <child link="lbr2_gripper_link_ee"/>
-        <origin rpy="0 0 0" xyz="0 0 0.14"/>
-    </joint>
-    <link name="lbr2_gripper_link_ee"/>
     <joint name="lbr2_right_finger_joint" type="fixed">
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <origin rpy="0 0 0" xyz="-0.012 0 0.061"/>
         <parent link="lbr2_link_gripper"/>
         <child link="lbr2_right_finger_link"/>
     </joint>
     <joint name="lbr2_left_finger_joint" type="fixed">
-        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <origin rpy="0 0 0" xyz="0.012 0 0.061"/>
         <parent link="lbr2_link_gripper"/>
         <child link="lbr2_left_finger_link"/>
     </joint>
@@ -299,7 +277,25 @@
     <joint name="lbr2_true_ee_joint" type="fixed">
         <parent link="lbr2_left_finger_link"/>
         <child link="lbr2_true_ee_link"/>
-        <origin rpy="0 0 0" xyz="0 0.14 0"/>
+        <origin rpy="0 0 0" xyz="-0.012 0 0.03"/>
     </joint>
-    <link name="lbr2_true_ee_link"/>
+    <link name="lbr2_true_ee_link">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.001"/>
+            <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="urdfs/iiwa7_R/meshes/collision/small_ball.stl"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="urdfs/iiwa7_R/meshes/collision/small_ball.stl"/>
+            </geometry>
+        </collision>
+    </link>
 </robot>
