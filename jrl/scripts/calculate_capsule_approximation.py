@@ -99,7 +99,7 @@ def random_choice_optimal_capsule(vertices: torch.Tensor):
         print("Using generic random capsule sampling.")
         p1s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
         p2s = bbox_min + (bbox_max - bbox_min) * torch.rand(nsamples, 3, device=device)
-        rs = bbox_diag * 0.37 * torch.rand(nsamples, device=device) + bbox_diag * 0.05
+        rs = bbox_diag * 0.33 * torch.rand(nsamples, device=device) + bbox_diag * 0.05
 
     print(f"Sampled {nsamples} capsules")
 
@@ -282,7 +282,7 @@ def stl_to_capsule(stl_path: str, outdir: pathlib.PosixPath, vis=None):
 
 
 """
-uv run python scripts/calculate_capsule_approximation.py --visualize --robot_name=iiwa14
+uv run python jrl/scripts/calculate_capsule_approximation.py --visualize --robot_name=iiwa14
 """
 
 
@@ -301,5 +301,5 @@ if __name__ == "__main__":
 
     outdir = pathlib.Path(f"jrl/urdfs/{args.robot_name}/capsules")
     outdir.mkdir(exist_ok=True)
-    for stl_path in pathlib.Path(f"jrl/urdfs/{args.robot_name}/meshes/onrobot_2fg7").glob("*.stl"):
+    for stl_path in pathlib.Path(f"jrl/urdfs/{args.robot_name}/meshes/object").glob("*.stl"):
         stl_to_capsule(stl_path, outdir, vis)

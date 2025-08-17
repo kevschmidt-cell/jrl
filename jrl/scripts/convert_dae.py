@@ -1,7 +1,7 @@
 import os
 import pyassimp
 
-input_dir = "jrl/urdfs/iiwa7_L/meshes/onrobot_2fg7"
+input_dir = "jrl/urdfs/object/meshes/object"
 output_dir = os.path.join(input_dir, "converted_stl")
 os.makedirs(output_dir, exist_ok=True)
 

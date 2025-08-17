@@ -763,6 +763,40 @@ class Iiwa7_R(Robot):
             additional_link_name=additional_link_name,
         )
 
+class Object(Robot):
+    name = "object"
+    formal_robot_name = "Grasped Object"
+
+    def __init__(self, verbose: bool = False):
+        active_joints = []  # keine beweglichen Gelenke
+        urdf_filepath = get_filepath("urdfs/object/se3_object.urdf")
+
+        base_link = "obj_com"   # dein zentrales Objekt-Frame
+        end_effector_link_name = "obj_ref"  # z. B. falls du ein Referenz-Frame brauchst
+
+        # Hier die Kapseln laden (damit Kollisionen funktionieren)
+        collision_capsules_by_link = {
+            "world": None,
+            "obj_com": _load_capsule("urdfs/object/capsules/object1.txt"),
+            "obj_p_01": None,  # Greifpunkte haben meist keine Kollisionsgeometrie
+            "obj_p_02": None,
+            "obj_ref": None,
+        }
+
+        ignored_collision_pairs = []  # hier könntest du Ausnahmen definieren
+
+        Robot.__init__(
+            self,
+            Object.name,
+            urdf_filepath,
+            active_joints,
+            base_link,
+            end_effector_link_name,
+            ignored_collision_pairs,
+            collision_capsules_by_link,
+            verbose=verbose,
+        )
+
 
 class Iiwa14(Robot):
     name = "iiwa14"
@@ -916,7 +950,7 @@ class Ur5(Robot):
             additional_link_name=None,
         )
 
-ALL_CLCS = [Panda, Fetch, FetchArm, Rizon4, Ur5, Dual_Iiwa7, Iiwa7, Iiwa7_R, Iiwa7_L, Iiwa14, Fr3]
+ALL_CLCS = [Panda, Fetch, FetchArm, Rizon4, Ur5, Dual_Iiwa7, Iiwa7, Iiwa7_R, Iiwa7_L, Iiwa14, Fr3, Object]
 # ALL_CLCS = [Ur5]
 # TODO: Add capsules for iiwa7, fix FK for baxter
 # ALL_CLCS = [Panda, Fetch, FetchArm, Iiwa7, Baxter]
