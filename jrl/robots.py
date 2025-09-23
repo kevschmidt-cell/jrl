@@ -3,7 +3,7 @@ from typing import List
 import torch
 import numpy as np
 
-from jrl.robot import Robot
+from jrl.robot import Robot, DualArmRobot
 from jrl.utils import get_filepath
 from jrl.config import DEFAULT_TORCH_DTYPE, DEVICE
 
@@ -239,6 +239,15 @@ IIWA7_R_ALWAYS_COLLIDING_LINKS = [
     ("lbr2_link_7", "lbr2_true_ee_link"),
     ("lbr2_left_finger_link", "lbr2_right_finger_link"),
     ]
+
+SIMPLE_ROBOT_01_NEVER_COLLIDING_LINKS = [
+    ("base_link", "link_2"),
+  ("base_link", "link_3"),
+  ("base_link", "end_effector"),
+  ("link_1", "link_3"),
+  ("link_1", "end_effector"),
+  ("link_2", "end_effector"),
+]
 
 def _load_capsule(path: str):
     data = np.loadtxt(get_filepath(path), delimiter=",")
@@ -762,6 +771,55 @@ class Iiwa7_R(Robot):
             verbose=verbose,
             additional_link_name=additional_link_name,
         )
+class DualIiwa7(DualArmRobot):
+    name = "dual_iiwa7"
+    formal_robot_name = "Dual Kuka LBR IIWA7"
+
+    def __init__(self, verbose: bool = False):
+        left = Iiwa7_L(verbose=verbose)
+        right = Iiwa7_R(verbose=verbose)
+        super().__init__(left_robot=left, right_robot=right, verbose=verbose)
+
+class Simple_Robot_01(Robot):
+    name = "simple_robot_01"
+    formal_robot_name = "Simple Robot 1"
+
+    # See
+    # Rotational repeatability calculated in calculate_rotational_repeatability.py
+    POSITIONAL_REPEATABILITY_MM = 0.1
+    ROTATIONAL_REPEATABILITY_DEG = 0.12614500942996015
+
+    def __init__(self, verbose: bool = False):
+        active_joints = [
+            "joint1",
+            "joint2",
+            "joint3",
+        ]
+        urdf_filepath = get_filepath("urdfs/simple_robot_01/simple_robot_01.urdf")
+        base_link = "world"
+        end_effector_link_name = "end_effector"
+        collision_capsules_by_link = {
+            "world": None,
+            "base_link": _load_capsule("urdfs/simple_robot_01/capsules/base_link2.txt"),
+            "link_1": _load_capsule("urdfs/simple_robot_01/capsules/link_x2.txt"),
+            "link_2": _load_capsule("urdfs/simple_robot_01/capsules/link_x2.txt"),
+            "link_3": _load_capsule("urdfs/simple_robot_01/capsules/link_x2.txt"),
+            "end_effector": _load_capsule("urdfs/simple_robot_01/capsules/end_effector2.txt"),
+        }
+        additional_link_name = None
+        ignored_collision_pairs = SIMPLE_ROBOT_01_NEVER_COLLIDING_LINKS
+        Robot.__init__(
+            self,
+            Simple_Robot_01.name,
+            urdf_filepath,
+            active_joints,
+            base_link,
+            end_effector_link_name,
+            ignored_collision_pairs,
+            collision_capsules_by_link,
+            verbose=verbose,
+            additional_link_name=None,
+        )
 
 class Object(Robot):
     name = "object"
@@ -950,7 +1008,7 @@ class Ur5(Robot):
             additional_link_name=None,
         )
 
-ALL_CLCS = [Panda, Fetch, FetchArm, Rizon4, Ur5, Dual_Iiwa7, Iiwa7, Iiwa7_R, Iiwa7_L, Iiwa14, Fr3, Object]
+ALL_CLCS = [Simple_Robot_01,Panda, Fetch, FetchArm, Rizon4, Ur5, Dual_Iiwa7, Iiwa7, Iiwa7_R, Iiwa7_L, Iiwa14, Fr3, Object]
 # ALL_CLCS = [Ur5]
 # TODO: Add capsules for iiwa7, fix FK for baxter
 # ALL_CLCS = [Panda, Fetch, FetchArm, Iiwa7, Baxter]

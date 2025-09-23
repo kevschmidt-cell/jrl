@@ -1195,6 +1195,89 @@ class Robot:
             J = J.reshape(nbatch, ndofs, ndists).permute(0, 2, 1)
 
             return J
+from typing import Tuple
+import numpy as np
+
+class DualArmRobot:
+    def __init__(self, left_robot: Robot, right_robot: Robot, verbose: bool = False):
+        """
+        Dient als Wrapper für zwei Einzel-Roboter (z.B. Kuka iiwa7 links und rechts).
+        """
+        self.left_robot = left_robot
+        self.right_robot = right_robot
+        self.verbose = verbose
+
+        # sanity check
+        if self.verbose:
+            print(f"[DualArmRobot] Left DoFs: {self.left_robot.ndof}, Right DoFs: {self.right_robot.ndof}")
+
+    # -------------------------------------------------
+    # --- Properties
+    # -------------------------------------------------
+    @property
+    def ndof(self) -> int:
+        """Gesamte Anzahl Freiheitsgrade (z.B. 14)."""
+        return self.left_robot.ndof + self.right_robot.ndof
+
+    # -------------------------------------------------
+    # --- Config Handling
+    # -------------------------------------------------
+    def split_config(self, q: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        """Teilt einen 14D-Konfigurationsvektor in (q_left, q_right)."""
+        assert len(q) == self.ndof, f"Config muss {self.ndof} DoFs haben!"
+        return q[:self.left_robot.ndof], q[self.left_robot.ndof:]
+
+    def merge_config(self, q_left: np.ndarray, q_right: np.ndarray) -> np.ndarray:
+        """Fügt (q_left, q_right) zu einem Gesamtvektor zusammen."""
+        return np.concatenate([q_left, q_right])
+
+    # -------------------------------------------------
+    # --- Collision Checking
+    # -------------------------------------------------
+    def check_collision(self, q: np.ndarray, box: Optional[klampt.Geometry3D] = None, verbose: bool = False) -> bool:
+        q_left, q_right = self.split_config(q)
+
+        # Konfigurationen setzen
+        self.left_robot.set_klampt_robot_config(q_left)
+        self.right_robot.set_klampt_robot_config(q_right)
+
+        # Self collisions
+        coll_left = self.left_robot.config_self_collides(q_left)
+        coll_right = self.right_robot.config_self_collides(q_right)
+
+        # Arm-to-arm collisions
+        coll_between = any(
+            (a.getRobot() == self.left_robot._klampt_robot and b.getRobot() == self.right_robot._klampt_robot) or
+            (a.getRobot() == self.right_robot._klampt_robot and b.getRobot() == self.left_robot._klampt_robot)
+            for a, b in self.left_robot._klampt_collision_checker.collisions()
+        )
+
+        # Environment collisions
+        coll_env_left = self.left_robot.config_collides_with_env(q_left, box) if box else False
+        coll_env_right = self.right_robot.config_collides_with_env(q_right, box) if box else False
+
+        return coll_left or coll_right or coll_between or coll_env_left or coll_env_right
+
+
+
+    # -------------------------------------------------
+    # --- Forward Kinematics
+    # -------------------------------------------------
+    def fk_left(self, q: np.ndarray):
+        """Gibt EE-Transform des linken Arms zurück."""
+        q_left, _ = self.split_config(q)
+        # Sicherstellen, dass es ein 2D-Tensor wird
+        q_left = np.atleast_2d(q_left)
+        q_left_torch = torch.as_tensor(q_left, dtype=DEFAULT_TORCH_DTYPE, device=DEVICE)
+        return self.left_robot.forward_kinematics(q_left_torch)
+
+    def fk_right(self, q: np.ndarray):
+        """Gibt EE-Transform des rechten Arms zurück."""
+        _, q_right = self.split_config(q)
+        q_right = np.atleast_2d(q_right)
+        q_right_torch = torch.as_tensor(q_right, dtype=DEFAULT_TORCH_DTYPE, device=DEVICE)
+        return self.right_robot.forward_kinematics(q_right_torch)
+
 
 
 def forward_kinematics_kinpy(robot: Robot, x: np.array) -> np.array:

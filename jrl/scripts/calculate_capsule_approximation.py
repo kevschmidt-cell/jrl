@@ -301,5 +301,5 @@ if __name__ == "__main__":
 
     outdir = pathlib.Path(f"jrl/urdfs/{args.robot_name}/capsules")
     outdir.mkdir(exist_ok=True)
-    for stl_path in pathlib.Path(f"jrl/urdfs/{args.robot_name}/meshes/object").glob("*.stl"):
+    for stl_path in pathlib.Path(f"jrl/urdfs/{args.robot_name}/meshes").glob("*.stl"):
         stl_to_capsule(stl_path, outdir, vis)
