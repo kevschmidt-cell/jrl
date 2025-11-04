@@ -404,31 +404,45 @@ class Robot:
         return angs
 
     def sample_joint_angles_and_poses(
-        self,
-        n: int,
-        joint_limit_eps: float = 1e-6,
-        only_non_self_colliding: bool = True,
-        tqdm_enabled: bool = False,
-        return_torch: bool = False,
-    ) -> Tuple[np.ndarray, np.ndarray]:
-        """Returns a [N x ndof] matrix of randomly drawn joint angle vectors with matching end effector poses."""
+            self,
+            n: int,
+            joint_limit_eps: float = 1e-6,
+            only_non_self_colliding: bool = True,
+            tqdm_enabled: bool = False,
+            return_torch: bool = False,
+        ) -> Tuple[np.ndarray, np.ndarray]:
+        """Returns a [N x ndof] matrix of randomly drawn joint angle vectors with matching end effector poses.
+        Supports fixed joints.
+        """
         samples = np.zeros((n, self.ndof))
         poses = np.zeros((n, 7))
         internal_batch_size = 5000
         counter = 0
 
+        # Bestimme bewegliche und fixed joints
+        movable_indices = [i for i, j in enumerate(self.joint_types) if j != "fixed"]
+        fixed_indices = [i for i, j in enumerate(self.joint_types) if j == "fixed"]
+        fixed_values = [self.joint_fixed_values[i] for i in fixed_indices]
+
         with tqdm.tqdm(total=n, disable=not tqdm_enabled) as pbar:
             while True:
+                # Sample nur für bewegliche Gelenke
                 samples_i = self.sample_joint_angles(internal_batch_size, joint_limit_eps=joint_limit_eps)
                 counter0_i = counter
 
                 for i in range(samples_i.shape[0]):
-                    sample = samples_i[i]
-                    if only_non_self_colliding and self.config_self_collides(sample):
+                    sample = samples_i[i]  # nur bewegliche Gelenke
+                    # Vollständige Konfiguration zusammensetzen
+                    full_q = np.zeros(self.ndof)
+                    full_q[movable_indices] = sample
+                    for idx, val in zip(fixed_indices, fixed_values):
+                        full_q[idx] = val
+
+                    if only_non_self_colliding and self.config_self_collides(full_q):
                         continue
 
-                    pose = self.forward_kinematics_klampt(sample[None, :])
-                    samples[counter] = sample
+                    pose = self.forward_kinematics_klampt(full_q[None, :])
+                    samples[counter] = full_q
                     poses[counter] = pose
                     counter += 1
                     pbar.update(1)
@@ -444,6 +458,7 @@ class Robot:
                         f" {internal_batch_size} non-self-colliding configs found) - is 'ignored_collision_pairs' set"
                         " correctly for this robot?"
                     )
+
 
     def set_klampt_robot_config(self, x: np.ndarray):
         """Set the internal klampt robots config with the given joint angle vector"""
