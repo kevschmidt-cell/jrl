@@ -662,6 +662,64 @@ class Iiwa7(Robot):
             additional_link_name=None,
         )
 
+class Iiwa7_N(Robot):
+    name = "iiwa7_N"
+    formal_robot_name = "Kuka LBR IIWA7 Neutral"
+
+    # See
+    # Rotational repeatability calculated in calculate_rotational_repeatability.py
+    POSITIONAL_REPEATABILITY_MM = 0.1
+    ROTATIONAL_REPEATABILITY_DEG = 0.12614500942996015
+
+    def __init__(self, verbose: bool = False):
+        active_joints = [
+            "lbr1_A1",
+            "lbr1_A2",
+            "lbr1_A3",
+            "lbr1_A4",
+            "lbr1_A5",
+            "lbr1_A6",
+            "lbr1_A7",
+        ]
+        urdf_filepath = get_filepath("urdfs/iiwa7_N/iiwa7_N_updated.urdf")
+        base_link = "world"
+        end_effector_link_name = "lbr1_true_ee_link"
+        additional_link_name = "lbr1_right_finger_link"
+        collision_capsules_by_link = {
+            "world": None,
+            "lbr1_link_0": _load_capsule("urdfs/iiwa7_N/capsules/link_0.txt"),
+            "lbr1_link_1": _load_capsule("urdfs/iiwa7_N/capsules/link_1.txt"),
+            "lbr1_link_2": _load_capsule("urdfs/iiwa7_N/capsules/link_2.txt"),
+            "lbr1_link_3": _load_capsule("urdfs/iiwa7_N/capsules/link_3.txt"),
+            "lbr1_link_4": _load_capsule("urdfs/iiwa7_N/capsules/link_4.txt"),
+            "lbr1_link_5": _load_capsule("urdfs/iiwa7_N/capsules/link_5.txt"),
+            "lbr1_link_6": _load_capsule("urdfs/iiwa7_N/capsules/link_6.txt"),
+            "lbr1_link_7": _load_capsule("urdfs/iiwa7_N/capsules/link_7.txt"),
+            "lbr1_link_gripper": _load_capsule("urdfs/iiwa7_N/capsules/lbr1_gripper_blender.txt"),
+            "lbr1_left_finger_link": _load_capsule("urdfs/iiwa7_N/capsules/2fg7_gripper_left.txt"),
+            "lbr1_right_finger_link": _load_capsule("urdfs/iiwa7_N/capsules/2fg7_gripper_right.txt"),
+            "lbr1_true_ee_link": _load_capsule("urdfs/iiwa7_N/capsules/small_ball.txt"),  # This is the link that is used for the end effector pose
+        }
+        for link, caps in collision_capsules_by_link.items():
+            if caps is None:
+                print(f"[DEBUG] No capsule for link: {link}")
+            else:
+                print(f"[DEBUG] {link} -> {len(caps)} capsules")
+
+        ignored_collision_pairs = IIWA7_L_ALWAYS_COLLIDING_LINKS + IIWA7_L_NEVER_COLLIDING_LINKS
+        Robot.__init__(
+            self,
+            Iiwa7_N.name,
+            urdf_filepath,
+            active_joints,
+            base_link,
+            end_effector_link_name,
+            ignored_collision_pairs,
+            collision_capsules_by_link,
+            verbose=verbose,
+            additional_link_name=additional_link_name,
+        )
+
 class Iiwa7_L(Robot):
     name = "iiwa7_L"
     formal_robot_name = "Kuka LBR IIWA7 Left"
@@ -1008,7 +1066,7 @@ class Ur5(Robot):
             additional_link_name=None,
         )
 
-ALL_CLCS = [Simple_Robot_01,Panda, Fetch, FetchArm, Rizon4, Ur5, Dual_Iiwa7, Iiwa7, Iiwa7_R, Iiwa7_L, Iiwa14, Fr3, Object]
+ALL_CLCS = [Simple_Robot_01,Panda, Fetch, FetchArm, Rizon4, Ur5, Dual_Iiwa7, Iiwa7, Iiwa7_R, Iiwa7_L, Iiwa7_N, Iiwa14, Fr3, Object]
 # ALL_CLCS = [Ur5]
 # TODO: Add capsules for iiwa7, fix FK for baxter
 # ALL_CLCS = [Panda, Fetch, FetchArm, Iiwa7, Baxter]

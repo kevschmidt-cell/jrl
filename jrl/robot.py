@@ -411,38 +411,32 @@ class Robot:
             tqdm_enabled: bool = False,
             return_torch: bool = False,
         ) -> Tuple[np.ndarray, np.ndarray]:
-        """Returns a [N x ndof] matrix of randomly drawn joint angle vectors with matching end effector poses.
-        Supports fixed joints.
-        """
+        """Returns a [N x ndof] matrix of randomly drawn joint angle vectors with matching end effector poses."""
         samples = np.zeros((n, self.ndof))
         poses = np.zeros((n, 7))
         internal_batch_size = 5000
         counter = 0
 
-        # Bestimme bewegliche und fixed joints
-        movable_indices = [i for i, j in enumerate(self.joint_types) if j != "fixed"]
-        fixed_indices = [i for i, j in enumerate(self.joint_types) if j == "fixed"]
-        fixed_values = [self.joint_fixed_values[i] for i in fixed_indices]
+        # Nur die Gelenke betrachten, die wirklich beweglich sind
+        movable_indices = self.revolute_joint_idxs
 
         with tqdm.tqdm(total=n, disable=not tqdm_enabled) as pbar:
             while True:
-                # Sample nur für bewegliche Gelenke
-                samples_i = self.sample_joint_angles(internal_batch_size, joint_limit_eps=joint_limit_eps)
+                samples_i = self.sample_joint_angles(
+                    internal_batch_size,
+                    joint_limit_eps=joint_limit_eps
+                )
+
                 counter0_i = counter
-
                 for i in range(samples_i.shape[0]):
-                    sample = samples_i[i]  # nur bewegliche Gelenke
-                    # Vollständige Konfiguration zusammensetzen
-                    full_q = np.zeros(self.ndof)
-                    full_q[movable_indices] = sample
-                    for idx, val in zip(fixed_indices, fixed_values):
-                        full_q[idx] = val
+                    sample = samples_i[i]
 
-                    if only_non_self_colliding and self.config_self_collides(full_q):
+                    # Falls nur kollisionsfreie Konfigurationen erlaubt sind
+                    if only_non_self_colliding and self.config_self_collides(sample):
                         continue
 
-                    pose = self.forward_kinematics_klampt(full_q[None, :])
-                    samples[counter] = full_q
+                    pose = self.forward_kinematics_klampt(sample[None, :])[0]
+                    samples[counter] = sample
                     poses[counter] = pose
                     counter += 1
                     pbar.update(1)
@@ -454,10 +448,11 @@ class Robot:
 
                 if counter0_i == counter:
                     raise RuntimeError(
-                        f"Unable to find non self-colliding configs for {self} ({0} /"
-                        f" {internal_batch_size} non-self-colliding configs found) - is 'ignored_collision_pairs' set"
-                        " correctly for this robot?"
+                        f"Unable to find non self-colliding configs for {self} "
+                        f"({0} / {internal_batch_size} non-self-colliding configs found) - "
+                        "is 'ignored_collision_pairs' set correctly for this robot?"
                     )
+
 
 
     def set_klampt_robot_config(self, x: np.ndarray):
